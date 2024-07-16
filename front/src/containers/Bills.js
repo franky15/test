@@ -24,9 +24,9 @@ export default class {
   }
 
   handleClickIconEye(icon) {
+
+    //code converti de jquery vers js
     const billUrl = icon.getAttribute("data-bill-url");
-    console.log("billUrl:", billUrl); // Vérifiez l'URL de l'image dans la console
-  
     const modal = document.getElementById("modaleFile");
     const modalBody = modal.querySelector(".modal-body");
   
@@ -47,9 +47,12 @@ export default class {
   
     // Affichage de la modal en utilisant du JavaScript pur
     this.showModal(modal);
+
+
   }
   
   showModal(modal) {
+
     modal.classList.add('show');
     modal.style.display = 'block';
     modal.removeAttribute('aria-hidden');
@@ -71,17 +74,20 @@ export default class {
   }
 
   hideModal(modal) {
+
     modal.classList.remove('show');
     modal.style.display = 'none';
     modal.setAttribute('aria-hidden', 'true');
     modal.removeAttribute('aria-modal');
     modal.removeAttribute('role');
-
-    // Supprimer le backdrop
+    
+    // Suppession du backdrop
     const backdrop = document.querySelector('.modal-backdrop');
+
     if (backdrop) {
       document.body.removeChild(backdrop);
     }
+
   }
 
   getBills = () => {

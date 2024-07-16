@@ -51,12 +51,19 @@ describe("Given I am connected as an employee", () => {
         )
         .map((a) => a.innerHTML);
 
-      // Tri des dates
+      ////////////////////////////
+
+      // Tri des dates  de la plus ancienne à la plus récente 
       const sortedDates = [...dates].sort((a, b) => (new Date(a) - new Date(b)));
+      
+      ////////////////////////////
 
       // Vérification que les dates sont triées de la plus ancienne à la plus récente
       expect(dates).toEqual(sortedDates);
     });
+
+    /*************** tests ajoutés********************/
+    /*************** *****************************/
 
     // Test pour vérifier si le bouton "New Bill" est cliquable et redirige vers la page de création de facture
     test("Then the 'New Bill' button should be clickable and navigate to the new bill page", () => {
@@ -84,6 +91,7 @@ describe("Given I am connected as an employee", () => {
 
     // Test pour vérifier l'ouverture de la modal en cliquant sur l'icône "eye"
     test("Then a modal should open when clicking on the eye icon", async () => {
+      
       // Définition du chemin de navigation
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname });
@@ -134,10 +142,12 @@ describe("Given I am connected as an employee", () => {
         expect(img).toBeTruthy();
         //expect(img.src).toBe(iconEyes[0].getAttribute("data-bill-url"));
       });
+
     });
 
     // Test pour la méthode getBills
     test("getBills should fetch and format bills from the mock API", async () => {
+      
       // Mock de la fonction bills du store
       const mockedStore = {
         bills: jest.fn().mockReturnThis(),
@@ -161,9 +171,10 @@ describe("Given I am connected as an employee", () => {
       // Vérification du formatage des factures
       expect(fetchedBills).toEqual(bills.map(bill => ({
         ...bill,
-        date: expect.any(String), // Nous ne vérifions pas le format exact ici
+        date: expect.any(String), 
         status: expect.any(String),
       })));
+
     });
 
   }); 

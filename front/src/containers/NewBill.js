@@ -2,6 +2,7 @@ import { ROUTES_PATH } from '../constants/routes.js'
 import Logout from "./Logout.js"
 
 export default class NewBill {
+  
   constructor({ document, onNavigate, store, localStorage }) {
     this.document = document
     this.onNavigate = onNavigate
@@ -16,87 +17,67 @@ export default class NewBill {
     new Logout({ document, localStorage, onNavigate })
   }
   handleChangeFile = e => {
+
     e.preventDefault()
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
 
     ///////////////////////////
 
-    console.log('file', file)
+    
 
-    if( !file.name.endsWith(".jpeg") && !file.name.endsWith(".png") && !file.name.endsWith(".jpg")) {
-      
-       //désactiver le bouton submit
-       const submitButton = this.document.querySelector("#btn-send-bill")
-       submitButton.disabled = true
+      if( !file.name.endsWith(".jpeg") && !file.name.endsWith(".png") && !file.name.endsWith(".jpg")) {
+        
+        //désactiver le bouton submit
+        const submitButton = this.document.querySelector("#btn-send-bill")
+        submitButton.disabled = true
 
-      console.log("****veillez choisir un fichier de type jpeg, jpg ou png")
+        //console.log("****veillez choisir un fichier de type jpeg, jpg ou png")
 
-    }else{
+      }else{
 
-      //désactiver le bouton submit
-      const submitButton = this.document.querySelector("#btn-send-bill")
-      submitButton.disabled = false
+        //activation du bouton submit et conversion du code du jquery au js
+        const submitButton = this.document.querySelector("#btn-send-bill")
+        submitButton.disabled = false
 
-      const filePath = e.target.value.split(/\\/g)
-      const fileName = filePath[filePath.length-1]
-      const formData = new FormData()
-      const email = JSON.parse(localStorage.getItem("user")).email
-      formData.append('file', file)
-      formData.append('email', email)
-  
-      this.store
-        .bills()
-        .create({
-          data: formData,
-          headers: {
-            noContentType: true
-          }
-        })
-        .then(({fileUrl, key}) => {
-          console.log(fileUrl)
-          this.billId = key
-          this.fileUrl = fileUrl
-          this.fileName = fileName
-        }).catch(error => console.error(error))
+        const filePath = e.target.value.split(/\\/g)
+        const fileName = filePath[filePath.length-1]
+        const formData = new FormData()
+        const email = JSON.parse(localStorage.getItem("user")).email
+        formData.append('file', file)
+        formData.append('email', email)
+    
+        this.store
+          .bills()
+          .create({
+            data: formData,
+            headers: {
+              noContentType: true
+            }
+          })
+          .then(({fileUrl, key}) => {
+            console.log(fileUrl)
+            this.billId = key
+            this.fileUrl = fileUrl
+            this.fileName = fileName
+          }).catch(error => console.error(error))
 
-    }
-   
+      }
+    
     ///////////////////////////
 
     
-
-    /*
-    const filePath = e.target.value.split(/\\/g)
-    const fileName = filePath[filePath.length-1]
-    const formData = new FormData()
-    const email = JSON.parse(localStorage.getItem("user")).email
-    formData.append('file', file)
-    formData.append('email', email)
-
-    this.store
-      .bills()
-      .create({
-        data: formData,
-        headers: {
-          noContentType: true
-        }
-      })
-      .then(({fileUrl, key}) => {
-        console.log(fileUrl)
-        this.billId = key
-        this.fileUrl = fileUrl
-        this.fileName = fileName
-      }).catch(error => console.error(error))
-
-     */
   }
 
 
   
   handleSubmit = e => {
+
     e.preventDefault()
+
     console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
+   
     const email = JSON.parse(localStorage.getItem("user")).email
+    
     const bill = {
       email,
       type: e.target.querySelector(`select[data-testid="expense-type"]`).value,
@@ -110,8 +91,10 @@ export default class NewBill {
       fileName: this.fileName,
       status: 'pending'
     }
+
     this.updateBill(bill)
     this.onNavigate(ROUTES_PATH['Bills'])
+    
   }
 
   // not need to cover this function by tests
